@@ -1,0 +1,44 @@
+# Nina SDR — variáveis de ambiente da VPS (~/.nina-sdr/.env)
+# Escritas pelo setup-installer (.install_env.sh) e completadas pelo setup-nina.sh.
+# Nunca commitar valores reais.
+
+# ── Injetadas pelo setup-installer (vêm do painel/Vault) ──────────────────────
+# Base das edge functions do app: https://<projeto>.supabase.co/functions/v1
+PANEL_BASE_URL=
+# Segredo VPS↔app (header X-Panel-Token). Global; vive no Vault server-side.
+PANEL_TOKEN=
+# Token one-time (gerado em onboarding-issue-token). Resolve o dono no instance-register.
+INSTALLER_TOKEN=
+# Chave Anthropic usada pelo OpenClaw para o LLM (provider anthropic/claude-sonnet-4-6).
+ANTHROPIC_API_KEY=
+# Endpoint da ferramenta de agendamento: {PANEL_BASE_URL}/nina-tools
+NINA_TOOLS_URL=
+# Segredo da ferramenta (header x-nina-secret). Vive no Vault server-side.
+NINA_TOOLS_SECRET=
+# Token READ-ONLY (deploy token / PAT) p/ a VPS puxar o branch nina-brain do repo
+# PRIVADO do cliente (Brain Build, T3). Vive no Vault server-side. Usado só em
+# runtime na URL de fetch — NÃO é persistido no .git/config.
+GITHUB_BRAIN_TOKEN=
+
+# ── Geradas/preenchidas pelo setup-nina.sh ────────────────────────────────────
+# Token dos hooks do gateway (Authorization: Bearer no /hooks/agent). openssl rand -hex 16.
+HOOKS_TOKEN=
+# URL pública do Cloudflare Tunnel (quick tunnel; muda a cada restart — heartbeat re-detecta).
+INGRESS_URL=
+# Id da instância retornado pelo instance-register.
+INSTANCE_ID=
+# ── Brain Build (T3): pull do branch nina-brain ───────────────────────────────
+# Repo do cliente (URL tokenless) e branch rastreado pelo cron brain-sync (*/2).
+BRAIN_REPO=
+BRAIN_BRANCH=nina-brain
+# Clone local que rastreia nina-brain (fonte da skill; o sync faz deploy no workspace).
+BRAIN_DIR=
+# ── Ingress (P0): produção via Named Cloudflare Tunnel ────────────────────────
+# quick = quick tunnel efêmero (default zero-config/fallback); named = URL fixa.
+INGRESS_MODE=quick
+# Para o modo 'named' (produção), o painel injeta estes 2 (do Vault). Com ambos
+# preenchidos, a VPS roda o connector por token e usa a URL fixa do cliente.
+# Token do Named Tunnel (Cloudflare Zero Trust). Lido pelo cloudflared via TUNNEL_TOKEN.
+TUNNEL_TOKEN=
+# Hostname público que o cliente mapeou pro tunnel (ex.: nina.cliente.com).
+CF_TUNNEL_HOSTNAME=
